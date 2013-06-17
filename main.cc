@@ -1,8 +1,13 @@
 #include "config.h"
 
 int main( int argc, char* argv[] ) {
-	// test output
-	cout << "Hola!" << endl;
+
+	cout << "Starting SDL..." << endl;
+	SDL_Init( SDL_INIT_EVERYTHING );
+	
+	cout << "Quitting SDL..." << endl;
+	SDL_Quit();
+
 	
 	return 0;
 }
