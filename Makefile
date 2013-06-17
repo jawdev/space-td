@@ -1,11 +1,11 @@
 COMPILER=g++
 MACHINE=$(shell uname -s)
 ifeq ($(MACHINE),Darwin)
-	CFLAGS=-I. -I/usr/share/SDL/include/SDL2 -Wall -m64 -O2 -pthread
 	LIBRARIES=-lm -L/usr/share/sdl/lib -lSDL2main -lSDL2 -framework OpenGL -framework Cocoa
+	CFLAGS=-I. -I/usr/share/sdl/include/SDL2 -Wall -m64 -O2 -pthread
 else
+	LIBRARIES=-lm -lSDL -lGL
 	CFLAGS=-I. -Wall -m64 -O2 -pthread
-	LIBRARIES=-lm -lSDL
 endif
 OBJDIR=.obj
 SOURCES=main.cc

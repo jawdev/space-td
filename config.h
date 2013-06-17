@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include <string>
-#include <SDL.h>
-#include <SDL_opengl.h>
+#include "SDL/SDL.h"
+
 
 #ifdef __APPLE__ //mac includes
 	#include <OpenGL/glu.h>
@@ -17,9 +17,6 @@ using namespace std;
 
  // Global objects
 namespace GLOBAL {
-
-	SDL_Window* window = NULL;
-	SDL_GLContext ctx;
 
 }
 
