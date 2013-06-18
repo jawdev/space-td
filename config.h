@@ -3,8 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include "SDL/SDL.h"
-
+#include <SDL.h>
 
 #ifdef __APPLE__ //mac includes
 	#include <OpenGL/glu.h>
