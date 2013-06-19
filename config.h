@@ -9,6 +9,7 @@
 	#include <OpenGL/glext.h>
 	#include <GLUT/glut.h>
 #else //everything else	
+	#include <GL/freeglut.h>
 #endif
 
 using namespace std;
