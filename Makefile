@@ -1,10 +1,10 @@
 COMPILER=g++
 MACHINE=$(shell uname -s)
 ifeq ($(MACHINE),Darwin)
-	LIBRARIES=-lm SDLmain.m -framework SDL -framework OpenGL -framework Cocoa
-	CFLAGS=-I. -I/Library/Frameworks/SDL.framework/Headers -Wall -m64 -O2 -pthread
+	LIBRARIES=-lm -framework OpenGL -framework GLUT -framework Cocoa
+	CFLAGS=-I. -Wall -m64 -O2 -pthread
 else
-	LIBRARIES=-lm -lSDL -lGL
+	LIBRARIES=-lm -lGL -lGLUT
 	CFLAGS=-I. -Wall -m64 -O2 -pthread
 endif
 OBJDIR=.obj

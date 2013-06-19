@@ -3,11 +3,11 @@
 
 #include <iostream>
 #include <string>
-#include <SDL.h>
 
 #ifdef __APPLE__ //mac includes
 	#include <OpenGL/glu.h>
 	#include <OpenGL/glext.h>
+	#include <GLUT/glut.h>
 #else //everything else	
 #endif
 
