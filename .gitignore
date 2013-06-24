@@ -1,0 +1,4 @@
+spacetd
+*.o
+*.swp
+.obj

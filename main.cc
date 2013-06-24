@@ -29,17 +29,27 @@ void keyboard( unsigned char key, int x, int y ) {
 
 int main( int argc, char* argv[] ) {
 
+	// init glut facilities
 	glutInit( &argc, argv );
 	glutInitDisplayMode( GLUT_RGBA );
+	glutInitContextVersion( 3, 3 );
+	glutInitContextProfile( GLUT_COMPATIBILITY_PROFILE  );
+	glutInitContextFlags( GLUT_FORWARD_COMPATIBLE );
+
+	// create window
 	glutInitWindowSize( SETTINGS::width, SETTINGS::height );
 	glutCreateWindow( SETTINGS::title.c_str() );
 
+	// redering settings
 	glClearColor( 0, 0, 0, 0 );
 	glShadeModel( GL_FLAT );
 
+	// load glut procedures
 	glutDisplayFunc( display );
 	glutReshapeFunc( reshape );
 	glutKeyboardFunc( keyboard );
 	glutMainLoop();
+
+	// quit normally
 	return 0;
 }
