@@ -1,14 +1,29 @@
 #include "config.h"
 
-void display( void ) {
-	glClear( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
-	glutSwapBuffers();
-
+void reshape( int w, int h ) {
+	glViewport( 0, 0, (GLsizei)w, (GLsizei)h );
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	float r = (float)w/(float)h;
+	glFrustum( -r, r, -1, 1, 1, 10 );
+	glMatrixMode( GL_MODELVIEW );
 }
 
+void display( void ) {
+	glClear( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
+	glColor3f( 1, 1, 1 );
+	glLoadIdentity();
+	gluLookAt( 0, 0, 2, 0, 0, 0, 0, 1, 0 );
+	glutWireCube( 1 );
+	glFlush();
+}
 
-void menu_select( int v ) {
-	exit( 0 );
+void keyboard( unsigned char key, int x, int y ) {
+	switch( key ) {
+	case 27:
+		exit( 0 );
+		break;
+	}
 }
 
 
@@ -19,12 +34,12 @@ int main( int argc, char* argv[] ) {
 	glutInitWindowSize( SETTINGS::width, SETTINGS::height );
 	glutCreateWindow( SETTINGS::title.c_str() );
 
-	glutCreateMenu( menu_select );
-	glutAddMenuEntry( "Exit", 0 );
-	glutAttachMenu( GLUT_RIGHT_BUTTON );
+	glClearColor( 0, 0, 0, 0 );
+	glShadeModel( GL_FLAT );
 
 	glutDisplayFunc( display );
+	glutReshapeFunc( reshape );
+	glutKeyboardFunc( keyboard );
 	glutMainLoop();
-	
 	return 0;
 }
