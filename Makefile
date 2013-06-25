@@ -11,8 +11,8 @@ else
 	endif
 endif
 OBJDIR=.obj
-SOURCES=main.cc
-DEPENDENCIES=config.h
+SOURCES=shader.cc main.cc
+DEPENDENCIES=shader.h config.h
 BINARY=spacetd
 
 #################################################
