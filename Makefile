@@ -7,7 +7,7 @@ else
 	ifeq ($(MACHINE),Windows_NT)
 		LIBRARIES=-lm -lopengl32 -lglut32 -lglu32
 	else
-		LIBRARIES=-lm -lGL -lGLU -lglut
+		LIBRARIES=-lm -lGLEW -lGL -lGLU -lglut
 	endif
 endif
 OBJDIR=.obj
