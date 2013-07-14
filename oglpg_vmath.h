@@ -697,7 +697,7 @@ static inline Tmat4<T> rotate(T angle, T x, T y, T z)
     const T x2 = x * x;
     const T y2 = y * y;
     const T z2 = z * z;
-    float rads = float(angle) * 0.0174532925f;
+    float rads = angle;
     const float c = cosf(rads);
     const float s = sinf(rads);
     const float omc = 1.0f - c;

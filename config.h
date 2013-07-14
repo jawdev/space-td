@@ -4,6 +4,7 @@
 #define JAW3D_TITLE "JAW Development, LLC - 3D OpenGL Libraries"
 #define JAW3D_VERSION 0
 
+
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -25,6 +26,10 @@ using namespace std;
 #include "oglpg_vmath.h"
 #include "shader.h"
 
+#define PI (float)M_PI
+#define X vmath::vec3( 1.0f, 0.0f, 0.0f )
+#define Y vmath::vec3( 0.0f, 1.0f, 0.0f )
+#define Z vmath::vec3( 0.0f, 0.0f, 1.0f )
 
  /* global objects */
 namespace GLOBAL {
