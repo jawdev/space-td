@@ -1,8 +1,8 @@
 #include "config.h"
 
 string SETTINGS::title = "Space TD";
-unsigned int SETTINGS::width = 200;
-unsigned int SETTINGS::height = 200;
+unsigned int SETTINGS::width = 800;
+unsigned int SETTINGS::height = 600;
 string SETTINGS::path_resources = "resources/";
 string SETTINGS::path_shaders = SETTINGS::path_resources+"shaders/";
 
