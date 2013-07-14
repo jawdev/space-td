@@ -1,20 +1,19 @@
-#ifndef __CONFIG_H__
-#define __CONFIG_H__
+#ifndef __CONFIG_H_
+#define __CONFIG_H_
 
-// basic system
+#define JAW3D_TITLE "JAW Development, LLC - 3D OpenGL Libraries"
+#define JAW3D_VERSION 0
+
 #include <fstream>
 #include <iostream>
 #include <string>
 using namespace std;
 
-//mac includes
-#ifdef __APPLE__ 
+#ifdef __APPLE__
 	#include <OpenGL/glu.h>
 	#include <OpenGL/glext.h>
 	#include <GLUT/glut.h>
-
-//everything else	
-#else 
+#else
 	#include <GL/glew.h>
 	#include <GL/freeglut.h>
 	#include <GL/glu.h>
@@ -22,6 +21,8 @@ using namespace std;
 #endif //__APPLE__
 
 // user files
+#include "display.h"
+#include "oglpg_vmath.h"
 #include "shader.h"
 
 
