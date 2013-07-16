@@ -21,6 +21,13 @@ float change = 0;
 
 void reshape( int w, int h ) {
 	glViewport( 0, 0, w, h );
+	SETTINGS::width = w;
+	SETTINGS::height = h;
+
+	// update projection
+	float aspect = (float)SETTINGS::height/(float)SETTINGS::width;
+	vmath::mat4 proj = vmath::frustum( -1, 1, -aspect, aspect, 1, 500 );
+	glUniformMatrix4fv( uniforms[M4_PROJECTION], 1, GL_FALSE, proj );
 }
 
 void display() {
@@ -109,10 +116,6 @@ int main( int argc, char* argv[] ) {
 		uniforms[M4_MODEL] = glGetUniformLocation( shaders.program(), "m4_model" );
 		uniforms[M4_PROJECTION] = glGetUniformLocation( shaders.program(), "m4_projection" );
 		uniforms[FLOAT_TMP] = glGetUniformLocation( shaders.program(), "f_tmp" );
-
-		float aspect = (float)SETTINGS::height/(float)SETTINGS::width;
-		vmath::mat4 proj = vmath::frustum( -1, 1, -aspect, aspect, 1, 500 );
-		glUniformMatrix4fv( uniforms[M4_PROJECTION], 1, GL_FALSE, proj );
 	}
 
 	glVertexAttribPointer( 0, 4, GL_FLOAT, GL_FALSE, 0, NULL );

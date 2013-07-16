@@ -25,6 +25,7 @@ using namespace std;
 #include "display.h"
 #include "oglpg_vmath.h"
 #include "shader.h"
+#include "shape.h"
 
 #define PI (float)M_PI
 #define X vmath::vec3( 1.0f, 0.0f, 0.0f )
