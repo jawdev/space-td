@@ -97,8 +97,8 @@ void ShaderProgram::debug() {
  
 	cout << "  [INFO] " << m_uniformLocs.size() << " located uniforms." << endl;
 	for( unsigned int i = 0; i < m_uniformLocs.size(); i++ ) {
-		cout << "    [" << m_uniformLocs[i] << "] ";
-		cout << m_uniformLbls[i] << endl;
+		cout << "    {" << m_uniformLocs[i] << ",";
+		cout << m_uniformLbls[i] << "}" << endl;
 	}
 }
 

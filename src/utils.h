@@ -19,7 +19,7 @@ namespace TIMER {
 	static chrono::high_resolution_clock::time_point time_for_diff = chrono::high_resolution_clock::now();
 	static float last_diff;
 
-	static inline float nanoseconds() {
+	static inline float time_since_epoch() {
 		chrono::high_resolution_clock::time_point t = chrono::high_resolution_clock::now();
 		float time_span = float(chrono::duration_cast< chrono::duration< float > >( t.time_since_epoch() ).count() );
 		return time_span;

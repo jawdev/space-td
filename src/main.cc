@@ -27,8 +27,9 @@ void reshape( int w, int h ) {
 
 void display() {
 	vmath::mat4 model( vmath::translate( 0.0f, 0.0f, -2.0f )*vmath::rotate( change, Y ) );
-	glUniformMatrix4fv( GLOBAL::shaderPrograms.get( 0 )->uloc( "m4_model" ), 1, GL_FALSE, model );
-	change += TIMER::diff()*1.0f;
+	GLOBAL::camera.set( model );
+	GLOBAL::camera.bind( GLOBAL::shaderPrograms.get( 0 )->uloc( "m4_model" ) );
+	change += TIMER::diff()*2.0f;
 
 	cube->bind();
 	glClear( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
@@ -63,12 +64,10 @@ int main( int argc, char* argv[] ) {
 	shaders->load( GL_VERTEX_SHADER, "basic.vs" ); 
 	shaders->load( GL_FRAGMENT_SHADER, "basic.fs", true );
 	glUseProgram( shaders->program() );
-	string uniforms[3] = { "m4_projection", "m4_model", "f_tmp" };
-	shaders->locate_uniforms( uniforms, 3 );
+	string uniforms[3] = { "m4_projection", "m4_model" };
+	shaders->locate_uniforms( uniforms, 2 );
 	shaders->debug();
 	GLOBAL::shaderPrograms.load( shaders );
-
-	TIMER::nanoseconds();
 
 	// load glut procedures
 	glutReshapeFunc( reshape );

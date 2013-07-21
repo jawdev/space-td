@@ -28,6 +28,7 @@ using namespace std;
 #include "utils.h"
 #include "display.h"
 #include "oglpg_vmath.h"
+#include "camera.h"
 #include "shader.h"
 #include "shape.h"
 
@@ -42,7 +43,7 @@ namespace GLOBAL {
 
 	// shader manager
 	extern manager< ShaderProgram* > shaderPrograms;
-
+	extern Camera camera;
 }
 
  /* global settings -- all loaded in main.cc  */

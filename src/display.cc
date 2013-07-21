@@ -1,6 +1,7 @@
 #include "config.h"
 
 manager< ShaderProgram* > GLOBAL::shaderPrograms;
+Camera GLOBAL::camera;
 
 ////////////////////////////////////////////////// Setup
 
