@@ -46,6 +46,8 @@ ShaderProgram::ShaderProgram() {
 
 ShaderProgram::~ShaderProgram() {
 	delete * m_shaders;
+	m_uniformLocs.clear();
+	m_uniformLbls.clear();
 }
 
 bool ShaderProgram::link() {
@@ -64,6 +66,42 @@ bool ShaderProgram::link() {
 	return true;
 }
 
+void ShaderProgram::debug() {
+	cout << "Debugging GLSL program..." << endl;
+
+	// check if program exists
+	if( !glIsProgram( m_program ) ) {
+		cout << "  [FAIL] program does not exist, ID=" << m_program << endl;
+		exit( EXIT_FAILURE );
+	} else cout << "  [OK] program exists, ID=" << m_program << endl;
+
+	// make sure program is valid
+	GLint program_valid = 0;
+	glValidateProgram( m_program );
+	glGetProgramiv( m_program, GL_VALIDATE_STATUS, &program_valid );
+	if( !program_valid ) {
+		cout << "  [FAIL] program validation failed" << endl;
+		exit( EXIT_FAILURE );
+	} else cout << "  [OK] program validated" << endl;
+	
+	// make sure program is active program
+	GLint current_program = 0;
+	glGetIntegerv( GL_CURRENT_PROGRAM, &current_program );
+	if( current_program == 0 ) {
+		cout << "  [WARN] Current program not active program" << endl;
+	} else cout << "  [OK] program is active" << endl;
+
+	GLint num_uniforms = 0;
+	glGetProgramiv( m_program, GL_ACTIVE_UNIFORMS, &num_uniforms );
+	cout << "  [INFO] " << num_uniforms << " active uniforms." << endl;
+ 
+	cout << "  [INFO] " << m_uniformLocs.size() << " located uniforms." << endl;
+	for( unsigned int i = 0; i < m_uniformLocs.size(); i++ ) {
+		cout << "    [" << m_uniformLocs[i] << "] ";
+		cout << m_uniformLbls[i] << endl;
+	}
+}
+
 //----------------- load
 
 Shader* ShaderProgram::load( GLenum type, string path, bool run_link ) {
@@ -75,34 +113,22 @@ Shader* ShaderProgram::load( GLenum type, string path, bool run_link ) {
 	return m_shaders[id];
 }
 
-void ShaderProgram::debug() {
-	cout << "Debugging GLSL program..." << endl;
+//----------------- uniform
 
-	// check if program exists
-	if( !glIsProgram( m_program ) ) {
-		cout << " [FAIL] program does not exist, ID=" << m_program << endl;
-		exit( EXIT_FAILURE );
-	} else cout << " [OK] program exists, ID=" << m_program << endl;
+void ShaderProgram::locate_uniforms( string* labels, unsigned int amt ) {
+	for( unsigned int i = 0; i < amt; i++ ) {
+		m_uniformLbls.push_back( labels[i] );
+		m_uniformLocs.push_back( glGetUniformLocation( m_program, labels[i].c_str() ) );
+	}
+}
 
-	// make sure program is valid
-	GLint program_valid = 0;
-	glValidateProgram( m_program );
-	glGetProgramiv( m_program, GL_VALIDATE_STATUS, &program_valid );
-	if( !program_valid ) {
-		cout << " [FAIL] program validation failed" << endl;
-		exit( EXIT_FAILURE );
-	} else cout << " [OK] program validated" << endl;
-	
-	// make sure program is active program
-	GLint current_program = 0;
-	glGetIntegerv( GL_CURRENT_PROGRAM, &current_program );
-	if( current_program == 0 ) {
-		cout << " [WARN] Current program not active program" << endl;
-	} else cout << " [OK] program is active" << endl;
-
-	GLint num_uniforms = 0;
-	glGetProgramiv( m_program, GL_ACTIVE_UNIFORMS, &num_uniforms );
-	cout << " [INFO] " << num_uniforms << " active uniforms." << endl;
+GLint ShaderProgram::uloc( string label ) {
+	for( unsigned int i = 0; i < m_uniformLbls.size(); i++ ) {
+		if( m_uniformLbls[i].compare( label ) == 0 ) {
+			return m_uniformLocs[i];
+		}
+	}
+	return -1;
 }
 
 //----------------- get

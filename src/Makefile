@@ -1,6 +1,6 @@
 COMPILER=g++
 MACHINE=$(shell uname -s)
-CFLAGS=-I. -Wall -m64 -O2 -pthread
+CFLAGS=-I. -Wall -m64 -O2 -pthread -std=c++11
 ifeq ($(MACHINE),Darwin)
 	LIBRARIES=-lm -framework OpenGL -framework GLUT -framework Cocoa
 else

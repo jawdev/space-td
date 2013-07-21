@@ -3,26 +3,20 @@
 
 ///////////////////////////////////////////////// Shape
 
-enum shape_draw_t class { LIST, INDEX };
+enum class shape_draw_t { LIST, INDEX };
 
 class Shape {
 public:
 	Shape( shape_draw_t );
-	~Shape();
+	virtual ~Shape();
 
-	// update
-	void apply_matrix( vmath::vec4 );
+	virtual void bind() = 0;
+	virtual void render() = 0;
 
 protected:
-	unsigned int m_countVertices;
-	unsigned int m_countColors;
-	unsigned int m_countIndices;
-	vmath::vec4 m_vertices[];
-	vmath::vec4 m_colors[];
-	GLuint m_indices[];
-
-	virtual void construct() = 0;
-private:
+	GLfloat* m_vertices;
+	GLfloat* m_colors;
+	GLushort* m_indices;
 	GLuint m_va;
 	GLuint m_vb;
 	GLuint m_eb;
@@ -36,10 +30,17 @@ public:
 	Cube( float radius=1.0f );
 	~Cube();
 
+	// update
+	void bind();
+	void render();
+
 	// get
 	float radius();
 private:
+	static const unsigned int CV = 32;	//count vertices
+	static const unsigned int CI = 17;	//count indices
 	float m_radius;
 };
+
 
 #endif //__SHAPE_H__

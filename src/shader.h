@@ -32,10 +32,14 @@ public:
 	ShaderProgram();
 	~ShaderProgram();
 	bool link();
+	void debug();
 
 	// load
 	Shader* load( GLenum type, string path, bool run_link=false );
-	void debug();
+
+	// uniform
+	void locate_uniforms( string* labels, unsigned int amt );
+	GLint uloc( string lbl );
 
 	// get
 	GLuint program();
@@ -47,6 +51,8 @@ private:
 
 	GLuint m_program;
 	Shader* m_shaders[SC];
+	vector< string > m_uniformLbls;
+	vector< GLint > m_uniformLocs;
 };
 
 #endif //__SHADER_H__
