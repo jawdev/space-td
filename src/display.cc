@@ -1,5 +1,7 @@
 #include "config.h"
 
+manager< ShaderProgram* > GLOBAL::shaderPrograms;
+
 ////////////////////////////////////////////////// Setup
 
 bool Setup::init_glut( int* argc, char* argv[] ) {

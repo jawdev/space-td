@@ -9,6 +9,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <chrono>
+#include <ctime>
 using namespace std;
 
 #ifdef __APPLE__
@@ -23,6 +25,7 @@ using namespace std;
 #endif //__APPLE__
 
 // user files
+#include "utils.h"
 #include "display.h"
 #include "oglpg_vmath.h"
 #include "shader.h"
@@ -35,6 +38,10 @@ using namespace std;
 
  /* global objects */
 namespace GLOBAL {
+	// loaded from display.cc
+
+	// shader manager
+	extern manager< ShaderProgram* > shaderPrograms;
 
 }
 

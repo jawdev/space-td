@@ -12,7 +12,7 @@ else
 endif
 OBJDIR=.obj
 SOURCES=display.cc shader.cc shape.cc main.cc
-DEPENDENCIES=display.h oglpg_vmath.h shader.h shape.h config.h
+DEPENDENCIES=utils.h display.h oglpg_vmath.h shader.h shape.h config.h
 BINARY=../bin/spacetd
 
 #################################################

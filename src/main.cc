@@ -10,7 +10,6 @@ string SETTINGS::path_shaders = SETTINGS::path_resources+"shaders/";
 //---------------------------- variables
 
 Cube* cube;
-ShaderProgram* shaders;
 float change = 0;
 
 //---------------------------- helpers
@@ -23,13 +22,13 @@ void reshape( int w, int h ) {
 	// update projection
 	float aspect = (float)SETTINGS::height/(float)SETTINGS::width;
 	vmath::mat4 proj = vmath::frustum( -1, 1, -aspect, aspect, 1, 500 );
-	glUniformMatrix4fv( shaders->uloc( "m4_projection" ), 1, GL_FALSE, proj );
+	glUniformMatrix4fv( GLOBAL::shaderPrograms.get( 0 )->uloc( "m4_projection" ), 1, GL_FALSE, proj );
 }
 
 void display() {
 	vmath::mat4 model( vmath::translate( 0.0f, 0.0f, -2.0f )*vmath::rotate( change, Y ) );
-	glUniformMatrix4fv( shaders->uloc( "m4_model" ), 1, GL_FALSE, model );
-	change += 0.001f;
+	glUniformMatrix4fv( GLOBAL::shaderPrograms.get( 0 )->uloc( "m4_model" ), 1, GL_FALSE, model );
+	change += TIMER::diff()*1.0f;
 
 	cube->bind();
 	glClear( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
@@ -60,13 +59,16 @@ int main( int argc, char* argv[] ) {
 	glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
 	cube = new Cube( 0.5f );
 
-	shaders = new ShaderProgram();
+	ShaderProgram* shaders = new ShaderProgram();
 	shaders->load( GL_VERTEX_SHADER, "basic.vs" ); 
 	shaders->load( GL_FRAGMENT_SHADER, "basic.fs", true );
 	glUseProgram( shaders->program() );
 	string uniforms[3] = { "m4_projection", "m4_model", "f_tmp" };
 	shaders->locate_uniforms( uniforms, 3 );
 	shaders->debug();
+	GLOBAL::shaderPrograms.load( shaders );
+
+	TIMER::nanoseconds();
 
 	// load glut procedures
 	glutReshapeFunc( reshape );
