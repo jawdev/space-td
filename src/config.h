@@ -29,6 +29,7 @@ using namespace std;
 #include "shader.h"
 #include "shape.h"
 #include "object.h"
+#include "manager.h"
 using namespace jaw3d;
 
 namespace jaw3d {
@@ -41,10 +42,6 @@ namespace jaw3d {
  /* global objects */
 namespace GLOBAL {
 	// loaded from display.cc
-
-	// shader manager
-	extern manager< ShaderProgram* > shaderPrograms;
-	extern Camera camera;
 
 	static const string TITLE = "JAW Development, LLC - 3D OpenGL Wrappers"; 
 	static const string VERSION = "0.0";

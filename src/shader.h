@@ -33,6 +33,7 @@ public:
 	ShaderProgram();
 	~ShaderProgram();
 	bool link();
+	void use();
 	void debug();
 
 	// load

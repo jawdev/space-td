@@ -67,6 +67,10 @@ bool ShaderProgram::link() {
 	return true;
 }
 
+void ShaderProgram::use() {
+	glUseProgram( m_program );
+}
+
 void ShaderProgram::debug() {
 	cout << "Debugging GLSL program..." << endl;
 

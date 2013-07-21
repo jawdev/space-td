@@ -1,9 +1,6 @@
 #include "config.h"
 namespace jaw3d {
 
-manager< ShaderProgram* > GLOBAL::shaderPrograms;
-Camera GLOBAL::camera;
-
 ////////////////////////////////////////////////// Setup
 
 bool Setup::init_glut( int* argc, char* argv[] ) {

@@ -26,17 +26,6 @@ namespace tools {
 	}
 }
 
-///////////////////////////////////////////////// manager
-
-template< class T > struct manager {
-	unsigned int load( T newItem ) {
-		items.push_back( newItem );
-		return items.size()-1;
-	}
-	T get( unsigned int i ) { return items[i]; }
-	vector< T > items;
-};
-
 ///////////////////////////////////////////////// timer
 
 namespace timer {
