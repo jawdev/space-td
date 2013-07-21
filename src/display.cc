@@ -1,4 +1,5 @@
 #include "config.h"
+namespace jaw3d {
 
 manager< ShaderProgram* > GLOBAL::shaderPrograms;
 Camera GLOBAL::camera;
@@ -23,7 +24,10 @@ bool Setup::init_glew() {
 }
 
 bool Setup::create_window( unsigned int w, unsigned int h, const char* title ) {
+	if( title == NULL ) title = GLOBAL::TITLE.c_str();
 	glutInitWindowSize( w, h );
 	glutCreateWindow( title );
 	return true;
+}
+
 }

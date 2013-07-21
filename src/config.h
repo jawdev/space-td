@@ -1,10 +1,6 @@
 #ifndef __CONFIG_H_
 #define __CONFIG_H_
 
-#define JAW3D_TITLE "JAW Development, LLC - 3D OpenGL Libraries"
-#define JAW3D_VERSION 0
-
-
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -26,11 +22,16 @@ using namespace std;
 
 // user files
 #include "utils.h"
+#include "geometry.h"
 #include "display.h"
 #include "oglpg_vmath.h"
 #include "camera.h"
 #include "shader.h"
 #include "shape.h"
+#include "object.h"
+using namespace jaw3d;
+
+namespace jaw3d {
 
 #define PI (float)M_PI
 #define X vmath::vec3( 1.0f, 0.0f, 0.0f )
@@ -44,6 +45,9 @@ namespace GLOBAL {
 	// shader manager
 	extern manager< ShaderProgram* > shaderPrograms;
 	extern Camera camera;
+
+	static const string TITLE = "JAW Development, LLC - 3D OpenGL Wrappers"; 
+	static const string VERSION = "0.0";
 }
 
  /* global settings -- all loaded in main.cc  */
@@ -59,26 +63,5 @@ namespace SETTINGS {
 	extern string path_shaders;
 }
 
- /* Useful functions */
-namespace tools {
-	
-	 /* read file and return char* */
-	inline char* file_get_contents( const char* filename, bool zero_term=false ) {
-		ifstream in( filename, ios::in|ios::binary );
-		if( !in ) {
-			cerr << "tools::file_get_contents> File could not be read: " << filename << endl;
-			exit( 1 );
-		}
-		char *contents;
-		in.seekg( 0, ios::end );
-		unsigned int len = (unsigned int)in.tellg();
-		contents = new char[len+1];
-		in.seekg( 0, ios::beg );
-		in.read( contents, len );
-		in.close();
-		contents[len] = 0;
-		return contents;
-	}
 }
-
 #endif //__CONFIG_H__

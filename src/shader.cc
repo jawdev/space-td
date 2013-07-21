@@ -1,4 +1,5 @@
 #include "config.h"
+namespace jaw3d {
 
 ///////////////////////////////////////////////// Shader
 
@@ -144,4 +145,6 @@ unsigned int ShaderProgram::map( GLenum type ) {
 		case GL_FRAGMENT_SHADER: return 1;
 		default: return 666;
 	}
+}
+
 }

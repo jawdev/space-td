@@ -1,4 +1,5 @@
 #include "config.h"
+namespace jaw3d {
 
 ///////////////////////////////////////////////// Shape
 
@@ -101,3 +102,5 @@ void Cube::render() {
 //----------------- get
 
 float Cube::radius() { return m_radius; }
+
+}

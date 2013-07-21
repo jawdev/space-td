@@ -1,5 +1,6 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
+namespace jaw3d {
 
 
 ///////////////////////////////////////////////// Shader
@@ -55,4 +56,5 @@ private:
 	vector< GLint > m_uniformLocs;
 };
 
+}
 #endif //__SHADER_H__

@@ -1,5 +1,6 @@
 #ifndef __SHAPE_H__
 #define __SHAPE_H__
+namespace jaw3d {
 
 ///////////////////////////////////////////////// Shape
 
@@ -42,5 +43,5 @@ private:
 	float m_radius;
 };
 
-
+}
 #endif //__SHAPE_H__
