@@ -71,7 +71,7 @@ int main( int argc, char* argv[] ) {
 	if( !Setup::init_glut( &argc, argv ) ) exit( EXIT_FAILURE );
 	if( !Setup::create_window( SETTINGS::width, SETTINGS::height, SETTINGS::title.c_str() ) ) exit( EXIT_FAILURE );
 	if( !Setup::init_glew() ) exit( EXIT_FAILURE );
-	glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
+	glClearColor( 0.2f, 0.0f, 0.2f, 1.0f );
 
 	// TEMP - render buffer
 	glGenRenderbuffers( NumRenderbuffers, renderbuffer );
