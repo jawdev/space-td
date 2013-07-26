@@ -1,6 +1,6 @@
 COMPILER=g++
 MACHINE=$(shell uname -s)
-CFLAGS=-I. -Wall -m64 -O2 -pthread -std=c++11
+CFLAGS=-I. -Wall -m64 -pthread -std=c++11 -g
 ifeq ($(MACHINE),Darwin)
 	LIBRARIES=-lm -framework OpenGL -framework GLUT -framework Cocoa
 else
@@ -11,8 +11,8 @@ else
 	endif
 endif
 OBJDIR=.obj
-SOURCES=display.cc camera.cc shader.cc shape.cc object.cc manager.cc main.cc
-DEPENDENCIES=utils.h geometry.h display.h oglpg_vmath.h camera.h shader.h shape.h object.h manager.h config.h
+SOURCES=display.cc camera.cc light.cc shader.cc shape.cc object.cc manager.cc main.cc
+DEPENDENCIES=utils.h geometry.h display.h oglpg_vmath.h light.h camera.h shader.h shape.h object.h manager.h config.h
 BINARY=../bin/spacetd
 
 #################################################

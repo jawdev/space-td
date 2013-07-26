@@ -1,5 +1,6 @@
 #include "config.h"
 
+bool SETTINGS::debug = true;
 string SETTINGS::title = "Space TD";
 unsigned int SETTINGS::width = 800;
 unsigned int SETTINGS::height = 600;
@@ -8,7 +9,8 @@ string SETTINGS::path_shaders = SETTINGS::path_resources+"shaders/";
 
 //---------------------------- TEMPORARY
 
-float g_time = 0;
+Camera* g_camera;
+Lighting *g_lighting;
 
 enum { Color, Depth, NumRenderbuffers };
 GLuint framebuffer, renderbuffer[NumRenderbuffers];
@@ -22,21 +24,15 @@ void reshape( int w, int h ) {
 
 	// update projection
 	float aspect = (float)SETTINGS::height/(float)SETTINGS::width;
-	vmath::mat4 proj = vmath::frustum( -1, 1, -aspect, aspect, 1, 500 );
-	glUniformMatrix4fv( manager::shaders::uloc( "basic", "m4_projection" ), 1, GL_FALSE, proj );
+	g_camera->projection( vmath::frustum( -1, 1, -aspect, aspect, 1, 500 ) );
+	g_camera->bind( manager::shaders::uloc( 0, "m4_camera" ) );
 }
 
 void display() {
 	float dtime = timer::diff();
-	g_time += dtime;
-	if( g_time > 1 ) {
-		g_time = 0;
-		cout << "FPS: " << ( 1.0f/dtime ) << endl;
-	}
 
 	// update
 	manager::objects::all_update( dtime );
-
 
 	glBindFramebuffer( GL_DRAW_FRAMEBUFFER, framebuffer );
 	glClear( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
@@ -49,6 +45,7 @@ void display() {
 	glBlitFramebuffer( 0, 0, SETTINGS::width-1, SETTINGS::height-1, 0, 0, SETTINGS::width-1, SETTINGS::height-1, GL_COLOR_BUFFER_BIT, GL_NEAREST );
 
 	// swap
+	glFlush();
 	glutSwapBuffers();
 	glutPostRedisplay();
 }
@@ -62,6 +59,9 @@ void keyboard( unsigned char key, int x, int y ) {
 }
 
 void quit() {
+	delete g_lighting;
+	delete g_camera;
+	manager::release_all();
 }
 
 
@@ -84,34 +84,47 @@ int main( int argc, char* argv[] ) {
 	glFramebufferRenderbuffer( GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderbuffer[Color] );
 	glFramebufferRenderbuffer( GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer[Depth] );
 	glEnable( GL_DEPTH_TEST );
-	
 
+	// basic shaders
 	ShaderProgram* sprog = new ShaderProgram();
-	sprog->load( GL_VERTEX_SHADER, "basic.vs" ); 
-	sprog->load( GL_FRAGMENT_SHADER, "basic.fs", true );
+	sprog->load( GL_VERTEX_SHADER, "lighting_basic.vs" ); 
+	sprog->load( GL_FRAGMENT_SHADER, "lighting_basic.fs", true );
 	sprog->use();
-	string uniforms[3] = { "m4_projection", "m4_camera", "m4_model" };
-	sprog->locate_uniforms( uniforms, 3 );
+	string uniforms[6] = {
+		"m4_camera", "m4_model", "m3_normal",
+		"v3_ambient", "v3_light_color", "v3_light_dir"
+	};
+	sprog->locate_uniforms( uniforms, 6 );
 	sprog->debug();
 	manager::shaders::load( sprog );
 
-	Camera camera;
-	camera.position( vec3( 0, 1.0f, 3.0f ) );
-	camera.apply_transform();
-	camera.bind( manager::shaders::uloc( 0, "m4_camera" ) );
+	// lighting
+	g_lighting = new Lighting();
+	g_lighting->locate_uniform( light_uloc_t::AMBIENT, manager::shaders::uloc( 0, "v3_ambient" ) );
+	g_lighting->locate_uniform( light_uloc_t::COLOR, manager::shaders::uloc( 0, "v3_light_color" ) );
+	g_lighting->locate_uniform( light_uloc_t::DIRECTION, manager::shaders::uloc( 0, "v3_light_dir" ) );
+	g_lighting->color( vec3( 1, 1, 1 ) );
+	g_lighting->direction( vec3( 0.2f, -1, -0.4f ) );
+	g_lighting->bind();
 
+	// camera
+	g_camera = new Camera();
+	g_camera->position( vec3( 0, 1.0f, 3.0f ) );
+	g_camera->apply_transform();
+
+	// objects
 	Object* pObj = new Object();
-	pObj->load_shape( new Cube( 0.5f ) );
-	pObj->mat_model_loc( manager::shaders::uloc( 0, "m4_model" ) );
-	pObj->position( vec3( 1, 0, 0 ) );//->velocity( vec3( 0.1f, 0, 0 ) );
-	manager::objects::load( pObj );
-
+		pObj->load_shape( new Cube( 0.5f, vec4( 1, 0, 0, 1  )) );
+		pObj->locate_uniform( obj_uloc_t::MODEL, manager::shaders::uloc( 0, "m4_model" ) );
+		pObj->locate_uniform( obj_uloc_t::NORMAL, 0 );
+		pObj->position( vec3( 1, 0, 0 ) )->spin( vec3( 0, 0.1f, 0 ) );
+		manager::objects::load( pObj );
 	Object* pObj2 = new Object();
-	pObj2->load_shape( new Cube( 0.1f, vec3( 1, 0, 0 ) ) );
-	pObj2->mat_model_loc( manager::shaders::uloc( 0, "m4_model" ) );
-	pObj2->position( vec3( -1, 0, 0 ) );//->velocity( vec3( -0.1f, 0, 0 ) );
-	manager::objects::load( pObj2 );
-	
+		pObj2->load_shape( new Cube( 0.4f, vec4( 0, 1, 0, 1 ) ) );
+		pObj2->locate_uniform( obj_uloc_t::MODEL, manager::shaders::uloc( 0, "m4_model" ) );
+		pObj2->locate_uniform( obj_uloc_t::NORMAL, 0 );
+		pObj2->position( vec3( -1, 0, 0 ) )->spin( vec3( 0.2f, 0, 0.1f ) );
+		manager::objects::load( pObj2 );
 
 	// load glut procedures
 	glutReshapeFunc( reshape );

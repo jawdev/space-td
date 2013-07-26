@@ -70,5 +70,80 @@ struct vec3 {
 	float z;
 };
 
+///////////////////////////////////////////////// vec4
+
+struct vec4 {
+	vec4( float _x=0.0f, float _y=0.0f, float _z=0.0f, float _w=0.0f ) {
+		x = _x;
+		y = _y;
+		z = _z;
+		w = _w;
+	}
+
+	vec4& operator=( const vec4 &v ) {
+		if( this == &v ) return *this;
+		x = v.x;
+		y = v.y;
+		z = v.z;
+		w = v.w;
+		return *this;
+	}
+	vec4& operator+=( const vec4 &v ) {
+		x += v.x;
+		y += v.y;
+		z += v.z;
+		w += v.w;
+		return *this;
+	}
+	
+	vec4& operator-=( const vec4 &v ) {
+		x -= v.x;
+		y -= v.y;
+		z -= v.z;
+		w -= v.w;
+		return *this;
+	}
+	vec4& operator*=( const float m ) {
+		x *= m;
+		y *= m;
+		z *= m;
+		w *= m;
+		return *this;
+	}
+	vec4& operator/=( const float m ) {
+		x /= m;
+		y /= m;
+		z /= m;
+		w /= m;
+		return *this;
+	}
+	const vec4 operator+( const vec4 &v ) const {
+		vec4 result = *this;
+		result += v;
+		return result;
+	}
+	
+	const vec4 operator-( const vec4 &v ) const {
+		vec4 result = *this;
+		result -= v;
+		return result;
+	}
+	const vec4 operator*( const float m ) const {
+		vec4 result = *this;
+		result *= m;
+		return result;
+	}
+	const vec4 operator/( const float m ) const {
+		vec4 result = *this;
+		result /= m;
+		return result;
+	}
+
+	float x;
+	float y;
+	float z;
+	float w;
+};
+
 }
 #endif //__GEOMETRY_H__

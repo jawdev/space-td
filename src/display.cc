@@ -27,4 +27,4 @@ bool Setup::create_window( unsigned int w, unsigned int h, const char* title ) {
 	return true;
 }
 
-}
+} //jaw3d

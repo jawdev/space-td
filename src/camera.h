@@ -15,6 +15,7 @@ public:
 
 	// set
 	void matrix( vmath::mat4 );
+	void projection( vmath::mat4 );
 	void position( vec3 );
 	void rotation( vec3 );
 	
@@ -22,6 +23,7 @@ private:
 	vec3 m_position;
 	vec3 m_rotation;
 	vmath::mat4 m_matrix;
+	vmath::mat4 m_projection;
 };
 
 }

@@ -1,6 +1,5 @@
 #version 330 core
 
-uniform mat4 m4_projection;
 uniform mat4 m4_camera;
 uniform mat4 m4_model;
 
@@ -11,5 +10,5 @@ out vec4 vs_fs_color;
 
 void main( void ) {
 	vs_fs_color = color;
-	gl_Position = m4_projection*( m4_camera*m4_model*position );
+	gl_Position = m4_camera*m4_model*position;
 }

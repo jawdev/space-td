@@ -25,6 +25,7 @@ using namespace std;
 #include "geometry.h"
 #include "display.h"
 #include "oglpg_vmath.h"
+#include "light.h"
 #include "camera.h"
 #include "shader.h"
 #include "shape.h"
@@ -49,6 +50,7 @@ namespace GLOBAL {
 
  /* global settings -- all loaded in main.cc  */
 namespace SETTINGS {
+	extern bool debug;
 
 	// window
 	extern string title;

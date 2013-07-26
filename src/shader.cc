@@ -105,6 +105,7 @@ void ShaderProgram::debug() {
 		cout << "    {" << m_uniformLocs[i] << ",";
 		cout << m_uniformLbls[i] << "}" << endl;
 	}
+	cout << "debug complete" << endl;
 }
 
 //----------------- load

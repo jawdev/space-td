@@ -21,7 +21,9 @@ template< class T > struct reflist {
 	T get( unsigned int id ) { return items[id]; }
 	T get( string s ) {
 		for( unsigned int i = 0; i < labels.size(); i++ ) {
-			if( labels[i].compare( s ) == 0 ) return items[i];
+			if( labels[i].compare( s ) == 0 ) {
+				return items[i];
+			}
 		}
 		return items[0];
 	}
@@ -35,7 +37,8 @@ template< class T > struct reflist {
 ///////////////////////////////////////////////// shaders
 
 struct shaders {
-	static reflist< ShaderProgram* > rlist;
+	static reflist< ShaderProgram* >* rlist;
+	static void release();
 
 	// load
 	static unsigned int load( ShaderProgram*, string="NOLABEL" );
@@ -50,7 +53,8 @@ struct shaders {
 ///////////////////////////////////////////////// objects
 
 struct objects {
-	static reflist< Object* > rlist;
+	static reflist< Object* >* rlist;
+	static void release();
 
 	// load
 	static unsigned int load( Object*, string="NOLABEL" );
@@ -70,6 +74,11 @@ struct objects {
 	static void all_bind_render();
 	static void all_tick( float dtime );
 };
+
+inline static void release_all() {
+	shaders::release();
+	objects::release();
+}
 
 }} //manager/jaw3d
 #endif //__MANAGER_H__

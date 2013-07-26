@@ -4,6 +4,8 @@ namespace jaw3d {
 
 ///////////////////////////////////////////////// Object
 
+enum class obj_uloc_t { MODEL, NORMAL, LEN };
+
 class Object {
 public:
 	Object();
@@ -11,6 +13,7 @@ public:
 
 	// load
 	void load_shape( Shape* );
+	void locate_uniform( obj_uloc_t, GLint loc );
 
 	// update
 	void update( float dtime );
@@ -27,7 +30,6 @@ public:
 	Object* velocity( vec3 );
 	Object* spin( vec3 );
 	Object* dscale( vec3 );
-	Object* mat_model_loc( GLint=-1 );
 
 	// get
 	bool allow_update();
@@ -38,7 +40,6 @@ public:
 	vec3 velocity();
 	vec3 spin();
 	vec3 dscale();
-	GLint mat_model_loc();
 private:
 	bool m_update;
 	bool m_render;
@@ -49,7 +50,7 @@ private:
 	vec3 m_spin;
 	vec3 m_dscale;
 	Shape* m_shape;
-	GLint m_matModelLoc;
+	GLint* m_uniforms;
 };
 
 }

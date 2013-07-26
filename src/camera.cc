@@ -3,13 +3,9 @@ namespace jaw3d {
 
 ///////////////////////////////////////////////// Camera
 
-Camera::Camera() {
-	
-}
+Camera::Camera() {}
 
-Camera::~Camera() {
-
-}
+Camera::~Camera() {}
 
 //----------------- update
 
@@ -20,12 +16,17 @@ void Camera::apply_transform() {
 }
 
 void Camera::bind( GLint uloc ) {
-	glUniformMatrix4fv( uloc, 1, GL_FALSE, m_matrix );
+	if( uloc == -1 ) {
+		cerr << "Camera::bind> invalid uniform location (" << uloc << ")" << endl;
+		exit( EXIT_FAILURE );
+	}
+	glUniformMatrix4fv( uloc, 1, GL_FALSE, m_projection*m_matrix );
 } 
 
 //----------------- update
 
 void Camera::matrix( vmath::mat4 mat ) { m_matrix = mat; }
+void Camera::projection( vmath::mat4 mat ) { m_projection = mat; }
 void Camera::position( vec3 v ) { m_position = v; }
 void Camera::rotation( vec3 v ) { m_rotation = v; }
 
