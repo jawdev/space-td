@@ -31,6 +31,8 @@ using namespace std;
 #include "shape.h"
 #include "object.h"
 #include "manager.h"
+#include "buffer.h"
+#include "state.h"
 using namespace jaw3d;
 
 namespace jaw3d {

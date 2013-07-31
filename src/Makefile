@@ -11,8 +11,8 @@ else
 	endif
 endif
 OBJDIR=.obj
-SOURCES=display.cc camera.cc light.cc shader.cc shape.cc object.cc manager.cc main.cc
-DEPENDENCIES=utils.h geometry.h display.h oglpg_vmath.h light.h camera.h shader.h shape.h object.h manager.h config.h
+SOURCES=display.cc camera.cc light.cc shader.cc shape.cc object.cc manager.cc buffer.cc state.cc main.cc
+DEPENDENCIES=utils.h geometry.h display.h oglpg_vmath.h light.h camera.h shader.h shape.h object.h manager.h buffer.h state.h config.h
 BINARY=../bin/spacetd
 
 #################################################
