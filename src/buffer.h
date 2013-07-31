@@ -10,7 +10,7 @@ public:
 	~Renderbuffer();
 	
 	// manage
-	void resize( unsigned int w, unsigned int h );
+	void resize( unsigned int w=0, unsigned int h=0 );
 	void use();
 	void blit( unsigned int=0 );
 

@@ -19,6 +19,8 @@ Renderbuffer::Renderbuffer() {
 	glFramebufferRenderbuffer( GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_renderbuffers[COLOR] );
 	glFramebufferRenderbuffer( GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_renderbuffers[DEPTH] );
 
+	if( SETTINGS::debug ) cout << "Renderbuffer::Renderbuffer> render buffer generated (" << m_width << "x" << m_height << ")" << endl;
+
 	glEnable( GL_DEPTH_TEST );
 }
 
@@ -29,7 +31,25 @@ Renderbuffer::~Renderbuffer() {
 //----------------- manage
 
 void Renderbuffer::resize( unsigned int w, unsigned int h ) {
-	cout << "Renderbuffer::resize> NOT IMPLEMENTED" << endl;
+	if( w == 0 && h == 0 ) {
+		w = SETTINGS::width;
+		h = SETTINGS::height;
+	}
+	m_width = w;
+	m_height = h;
+
+	// reallocate buffer storage
+	glDeleteRenderbuffers( NUM_BUFFERS, m_renderbuffers );
+	glGenRenderbuffers( NUM_BUFFERS, m_renderbuffers );
+	glBindRenderbuffer( GL_RENDERBUFFER, m_renderbuffers[COLOR] );
+	glRenderbufferStorage( GL_RENDERBUFFER, GL_RGBA, m_width, m_height );
+	glBindRenderbuffer( GL_RENDERBUFFER, m_renderbuffers[DEPTH] );
+	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_width, m_height );
+	glBindFramebuffer( GL_DRAW_FRAMEBUFFER, m_framebuffer );
+	glFramebufferRenderbuffer( GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_renderbuffers[COLOR] );
+	glFramebufferRenderbuffer( GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_renderbuffers[DEPTH] );
+
+	if( SETTINGS::debug ) cout << "Renderbuffer::Renderbuffer> render buffer resized (" << m_width << "x" << m_height << ")" << endl;
 }
 
 void Renderbuffer::use() {

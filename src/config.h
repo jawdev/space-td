@@ -30,9 +30,9 @@ using namespace std;
 #include "shader.h"
 #include "shape.h"
 #include "object.h"
-#include "manager.h"
 #include "buffer.h"
 #include "state.h"
+#include "manager.h"
 using namespace jaw3d;
 
 namespace jaw3d {

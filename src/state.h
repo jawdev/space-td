@@ -10,8 +10,9 @@ public:
 	virtual ~State();
 
 	// load
-	virtual void load() = 0;
-	virtual void unload() = 0;
+	virtual void load();
+	virtual void unload();
+	virtual void key( unsigned char k, bool down ); 
 
 	// update
 	virtual void reshape();

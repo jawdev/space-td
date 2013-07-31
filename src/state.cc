@@ -4,8 +4,12 @@ namespace jaw3d {
 ///////////////////////////////////////////////// State
 
 State::State() {}
-
 State::~State() {}
+
+//----------------- load
+void State::load() {}
+void State::unload() {}
+void State::key( unsigned char k, bool down ) {}
 
 //----------------- update
 
@@ -66,15 +70,18 @@ void TestArea::load() {
 }
 
 void TestArea::unload() {
+	delete m_renderbuffer;
 	delete m_camera;
 	delete m_lighting;
-	manager::release_all();
-	delete m_renderbuffer;
 }
 
 //----------------- update
 
 void TestArea::reshape() {
+	// update renderbuffer
+	m_renderbuffer->resize();
+
+	// update projection transform
 	float aspect = (float)SETTINGS::height/(float)SETTINGS::width;
 	m_camera->projection( vmath::frustum( -1, 1, -aspect, aspect, 1, 500 ) );
 	m_camera->bind( manager::shaders::uloc( 0, "m4_camera" ) );

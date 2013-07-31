@@ -30,4 +30,4 @@ void Camera::projection( vmath::mat4 mat ) { m_projection = mat; }
 void Camera::position( vec3 v ) { m_position = v; }
 void Camera::rotation( vec3 v ) { m_rotation = v; }
 
-}
+} //jaw3d

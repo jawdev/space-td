@@ -28,6 +28,7 @@ template< class T > struct reflist {
 		return items[0];
 	}
 
+	void clear() { items.clear(); labels.clear(); }
 	unsigned int size() { return items.size(); }
 
 	vector< string > labels;
@@ -39,6 +40,7 @@ template< class T > struct reflist {
 struct shaders {
 	static reflist< ShaderProgram* >* rlist;
 	static void release();
+	static void clear();
 
 	// load
 	static unsigned int load( ShaderProgram*, string="NOLABEL" );
@@ -55,6 +57,7 @@ struct shaders {
 struct objects {
 	static reflist< Object* >* rlist;
 	static void release();
+	static void clear();
 
 	// load
 	static unsigned int load( Object*, string="NOLABEL" );
@@ -75,9 +78,35 @@ struct objects {
 	static void all_tick( float dtime );
 };
 
+///////////////////////////////////////////////// states
+
+struct states {
+	static reflist< State* >* rlist;
+	static void release();
+	static void clear();
+
+	// load
+	static unsigned int load( State*, string="NOLABEL" );
+	static State* get( unsigned int id=0 );
+	static State* get( string name );
+
+	// manage
+	static State* activate( unsigned int id=0 );
+	static State* activate( string name );
+	static void reshape( int id=-1 );
+	static void reshape( string name );
+	static void display( int id=-1 );
+	static void display( string name );
+	static void key( unsigned char k, bool down, int id=-1 );
+	static void key( unsigned char k, bool down, string name );
+	
+	static State* active;
+};
+
 inline static void release_all() {
 	shaders::release();
 	objects::release();
+	states::release();
 }
 
 }} //manager/jaw3d
