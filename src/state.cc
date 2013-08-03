@@ -25,6 +25,8 @@ TestArea::~TestArea() { unload(); }
 //----------------- load
 
 void TestArea::load() {
+	m_time = 0;
+	m_fps = new tools::fps_tracker();
 	m_renderbuffer = new Renderbuffer();
 
 	// basic shaders
@@ -51,25 +53,40 @@ void TestArea::load() {
 
 	// camera
 	m_camera = new Camera();
-	m_camera->position( vec3( 0, 1.0f, 3.0f ) );
+	m_camera->position( vec3( 0, 3.0f, 10.0f ) );
 	m_camera->apply_transform();
 
 	// objects
+	GLint loc_model = manager::shaders::uloc( 0, "m4_model" );
+	GLint loc_normal = manager::shaders::uloc( 0, "m3_normal" );
 	Object* pObj = new Object();
-		pObj->load_shape( new Cube( 0.5f, vec4( 1, 0, 0, 1  )) );
-		pObj->locate_uniform( obj_uloc_t::MODEL, manager::shaders::uloc( 0, "m4_model" ) );
-		pObj->locate_uniform( obj_uloc_t::NORMAL, 0 );
-		pObj->position( vec3( 1, 0, 0 ) )->spin( vec3( 0, 0.1f, 0 ) );
-		manager::objects::load( pObj );
+		pObj->load_shape( new Cube( 0.5f, vec4( 1, 0, 0, 1 ) ) );
+		pObj->locate_uniform( obj_uloc_t::MODEL, loc_model );
+		pObj->locate_uniform( obj_uloc_t::NORMAL, loc_normal );
+		pObj->position( vec3( 1, 2, 0 ) )->spin( vec3( 0, 0.1f, 0 ) );
+		manager::objects::load( pObj, "cube" );
 	Object* pObj2 = new Object();
-		pObj2->load_shape( new Cube( 0.4f, vec4( 0, 1, 0, 1 ) ) );
-		pObj2->locate_uniform( obj_uloc_t::MODEL, manager::shaders::uloc( 0, "m4_model" ) );
-		pObj2->locate_uniform( obj_uloc_t::NORMAL, 0 );
-		pObj2->position( vec3( -1, 0, 0 ) )->spin( vec3( 0.2f, 0, 0.1f ) );
-		manager::objects::load( pObj2 );
+		pObj2->load_shape( new FloorPlane( 5, 5, vec4( 1, 1, 1, 1 ) ) );
+		pObj2->locate_uniform( obj_uloc_t::MODEL, loc_model );
+		pObj2->locate_uniform( obj_uloc_t::NORMAL, loc_normal );
+		manager::objects::load( pObj2, "plane" );
+	/*
+	for( unsigned int i = 0; i < 1000; i++ ) {
+		Object* obj = new Object();
+		obj->load_shape( new Cube( 0.1f, vec4( 1, 0, 0, 1 ) ) );
+		obj->locate_uniform( obj_uloc_t::MODEL, loc_model );
+		obj->locate_uniform( obj_uloc_t::NORMAL, loc_normal );
+		obj->position( vec3( 0, ( i*0.3f ), 0 ) );
+		manager::objects::load( obj );
+	}
+	*/
 }
 
 void TestArea::unload() {
+	manager::objects::clear();
+	manager::shaders::clear();
+
+	delete m_fps;
 	delete m_renderbuffer;
 	delete m_camera;
 	delete m_lighting;
@@ -89,6 +106,13 @@ void TestArea::reshape() {
 
 void TestArea::display() {
 	float dtime = timer::diff();
+	m_time += dtime;
+	if( m_time > 1 ) {
+		m_fps->supply( dtime );
+		float avg = m_fps->average();
+		cout << "dtime: " << avg << "s, fps: " << 1.0f/avg << endl;
+		m_time = 0;
+	}
 
 	// update
 	m_renderbuffer->use();

@@ -36,6 +36,8 @@ public:
 	void reshape();
 	void display();
 private:
+	double m_time;
+	tools::fps_tracker* m_fps;
 	Camera* m_camera;
 	Lighting* m_lighting;
 	Renderbuffer* m_renderbuffer;

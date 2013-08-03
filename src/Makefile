@@ -1,17 +1,9 @@
 COMPILER=g++
 MACHINE=$(shell uname -s)
-CFLAGS=-I. -Wall -m64 -pthread -std=c++11 -g
-ifeq ($(MACHINE),Darwin)
-	LIBRARIES=-lm -framework OpenGL -framework GLUT -framework Cocoa
-else
-	ifeq ($(MACHINE),Windows_NT)
-		LIBRARIES=-lm -lopengl32 -lglut32 -lglu32
-	else
-		LIBRARIES=-lm -lGLEW -lGL -lGLU -lglut
-	endif
-endif
+CFLAGS=-I. -I/apps/bullet-2.81 -Wall -m64 -pthread -std=c++11 -g
+LIBRARIES=-L/apps/bullet-2.81 -lm -lGLEW -lGL -lGLU -lglut
 OBJDIR=.obj
-SOURCES=display.cc camera.cc light.cc shader.cc shape.cc object.cc buffer.cc state.cc manager.cc main.cc
+SOURCES=utils.cc display.cc camera.cc light.cc shader.cc shape.cc object.cc buffer.cc state.cc manager.cc main.cc
 DEPENDENCIES=utils.h geometry.h display.h oglpg_vmath.h light.h camera.h shader.h shape.h object.h buffer.h state.h manager.cc config.h
 BINARY=../bin/spacetd
 

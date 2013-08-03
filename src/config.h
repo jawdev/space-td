@@ -20,6 +20,9 @@ using namespace std;
 
 #endif //__APPLE__
 
+// bullet physics
+//#include <btBulletDynamicsCommon.h>
+
 // user files
 #include "utils.h"
 #include "geometry.h"

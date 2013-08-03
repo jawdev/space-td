@@ -6,13 +6,41 @@ namespace jaw3d {
 
 class Shape {
 public:
-	Shape();
+	Shape( vec4 color );
 	virtual ~Shape();
 
 	virtual void bind() = 0;
 	virtual void render() = 0;
 
+	// get
+	vec4 color();
 protected:
+	vec4 shape_color;
+};
+
+///////////////////////////////////////////////// Plane
+
+class FloorPlane : public Shape {
+public:
+	FloorPlane( float width, float length, vec4 color=vec4() );
+	~FloorPlane();
+
+	// update
+	void bind();
+	void render();
+
+	// get
+	float width();
+	float length();
+private:
+	static const unsigned int CV = 3*4*2;
+	static const unsigned int CN = 3*3*2;
+	float m_width;
+	float m_length;
+	GLuint m_va;
+	GLuint m_vb;
+	GLfloat* m_vertices;
+	GLfloat* m_normals;
 };
 
 ///////////////////////////////////////////////// Cube
@@ -28,12 +56,10 @@ public:
 
 	// get
 	float radius();
-	vec4 color();
 private:
 	static const unsigned int CV = 2*3*4*6;	//count vertices
 	static const unsigned int CN = 2*3*3*6; //count normals
 	float m_radius;
-	vec4 m_color;
 	GLuint m_va;
 	GLuint m_vb;
 	GLfloat* m_vertices;

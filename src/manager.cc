@@ -9,7 +9,7 @@ void shaders::clear() { rlist->clear(); }
 
 //----------------- load
 
-unsigned int shaders::load( ShaderProgram* pProgram, string label ) { return rlist->load( pProgram, label ) ;}
+unsigned int shaders::load( ShaderProgram* pProgram, string label ) { if( SETTINGS::debug ) cout << "[DEBUG] manager::shaders::load> loading ShaderProgram (" << label << "->" << pProgram << ")" << endl; return rlist->load( pProgram, label ) ;}
 ShaderProgram* shaders::get( unsigned int id ) { return rlist->get( id ); }
 ShaderProgram* shaders::get( string label ) { return rlist->get( label ); }
 
@@ -35,7 +35,7 @@ void objects::clear() { rlist->clear(); }
 
 //----------------- load
 
-unsigned int objects::load( Object* pObj, string label ) { return rlist->load( pObj, label ); }
+unsigned int objects::load( Object* pObj, string label ) { if( SETTINGS::debug ) cout << "[DEBUG] manager::objects::load> loading Object (" << label << "->" << pObj << ")" << endl; return rlist->load( pObj, label ); }
 Object* objects::get( unsigned int id ) { return rlist->get( id ); }
 Object* objects::get( string label ) { return rlist->get( label ); }
 
@@ -99,7 +99,7 @@ void states::clear() { rlist->clear(); }
 
 //----------------- load
 
-unsigned int states::load( State* s, string name ) { return rlist->load( s, name ); }
+unsigned int states::load( State* s, string name ) { if( SETTINGS::debug ) cout << "[DEBUG] manager::states::load> loading State (" << name << "->" << s << ")" << endl; return rlist->load( s, name ); }
 State* states::get( unsigned int id ) { return rlist->get( id ); }
 State* states::get( string name ) { return rlist->get( name ); }
 

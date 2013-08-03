@@ -24,7 +24,24 @@ namespace tools {
 		contents[len] = 0;
 		return contents;
 	}
-}
+
+	///////////////////////////////////////// FPSTracker
+
+	struct fps_tracker{
+		fps_tracker( unsigned int samples=100 );
+		~fps_tracker();
+
+		void supply( float dtime );
+
+		float average();
+
+		unsigned int samples;
+		unsigned int index;
+		float* dtimes;
+		bool full;
+	};
+
+} //tools
 
 ///////////////////////////////////////////////// timer
 
@@ -51,7 +68,8 @@ namespace timer {
 		return (unsigned int)1.0f/last_diff;
 	}
 
-}
+} //timer
+
 
 }
 #endif //__UTILS_H__
