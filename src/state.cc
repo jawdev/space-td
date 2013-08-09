@@ -52,9 +52,8 @@ void TestArea::load() {
 	m_lighting->bind();
 
 	// camera
-	m_camera = new Camera();
+	m_camera = new Camera( manager::shaders::uloc( 0, "m4_camera" ) );
 	m_camera->position( vec3( 0, 3.0f, 10.0f ) );
-	m_camera->apply_transform();
 
 	// objects
 	GLint loc_model = manager::shaders::uloc( 0, "m4_model" );
@@ -70,16 +69,6 @@ void TestArea::load() {
 		pObj2->locate_uniform( obj_uloc_t::MODEL, loc_model );
 		pObj2->locate_uniform( obj_uloc_t::NORMAL, loc_normal );
 		manager::objects::load( pObj2, "plane" );
-	/*
-	for( unsigned int i = 0; i < 1000; i++ ) {
-		Object* obj = new Object();
-		obj->load_shape( new Cube( 0.1f, vec4( 1, 0, 0, 1 ) ) );
-		obj->locate_uniform( obj_uloc_t::MODEL, loc_model );
-		obj->locate_uniform( obj_uloc_t::NORMAL, loc_normal );
-		obj->position( vec3( 0, ( i*0.3f ), 0 ) );
-		manager::objects::load( obj );
-	}
-	*/
 }
 
 void TestArea::unload() {
@@ -99,9 +88,7 @@ void TestArea::reshape() {
 	m_renderbuffer->resize();
 
 	// update projection transform
-	float aspect = (float)SETTINGS::height/(float)SETTINGS::width;
-	m_camera->projection( vmath::frustum( -1, 1, -aspect, aspect, 1, 500 ) );
-	m_camera->bind( manager::shaders::uloc( 0, "m4_camera" ) );
+	m_camera->bind();
 }
 
 void TestArea::display() {

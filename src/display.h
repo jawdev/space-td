@@ -19,11 +19,13 @@ public:
 	static bool default_callback_reshape();
 	static bool default_callback_display();
 	static bool default_callback_keyboard();
+	static bool default_callback_mouse();
 	static bool default_callback_quit();
 	static bool default_callbacks();
 	static void callback_reshape( int w, int h );
 	static void callback_display();
 	static void callback_keydown( unsigned char key, int x, int y );
+	static void callback_mouse( int button, int state, int x, int y );
 	static void callback_quit();
 
 	// run

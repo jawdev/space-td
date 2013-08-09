@@ -2,6 +2,68 @@
 #define __GEOMETRY_H__
 namespace jaw3d {
 
+///////////////////////////////////////////////// vec2
+
+struct vec2 {
+	vec2( float _x=0.0f, float _y=0.0f, float _z=0.0f ) {
+		x = _x;
+		y = _y;
+	}
+
+	vec2& operator=( const vec2 &v ) {
+		if( this == &v ) return *this;
+		x = v.x;
+		y = v.y;
+		return *this;
+	}
+	vec2& operator+=( const vec2 &v ) {
+		x += v.x;
+		y += v.y;
+		return *this;
+	}
+	
+	vec2& operator-=( const vec2 &v ) {
+		x -= v.x;
+		y -= v.y;
+		return *this;
+	}
+	vec2& operator*=( const float m ) {
+		x *= m;
+		y *= m;
+		return *this;
+	}
+	vec2& operator/=( const float m ) {
+		x /= m;
+		y /= m;
+		return *this;
+	}
+	const vec2 operator+( const vec2 &v ) const {
+		vec2 result = *this;
+		result += v;
+		return result;
+	}
+	
+	const vec2 operator-( const vec2 &v ) const {
+		vec2 result = *this;
+		result -= v;
+		return result;
+	}
+	const vec2 operator*( const float m ) const {
+		vec2 result = *this;
+		result *= m;
+		return result;
+	}
+	const vec2 operator/( const float m ) const {
+		vec2 result = *this;
+		result /= m;
+		return result;
+	}
+
+	float x;
+	float y;
+};
+
+
 ///////////////////////////////////////////////// vec3
 
 struct vec3 {
@@ -144,6 +206,8 @@ struct vec4 {
 	float z;
 	float w;
 };
+
+///////////////////////////////////////////////// operators
 
 }
 #endif //__GEOMETRY_H__

@@ -46,13 +46,18 @@ bool Setup::default_callback_keyboard() {
 	return true;
 }
 
+bool Setup::default_callback_mouse() {
+	glutMouseFunc( Setup::callback_mouse );
+	return true;
+}
+
 bool Setup::default_callback_quit() {
 	atexit( Setup::callback_quit );
 	return true;
 }
 
 bool Setup::default_callbacks() {
-	return ( default_callback_reshape() && default_callback_display() && default_callback_keyboard() && default_callback_quit() );
+	return ( default_callback_reshape() && default_callback_display() && default_callback_keyboard() && default_callback_mouse() && default_callback_quit() );
 }
 
 void Setup::callback_reshape( int w, int h ) {
@@ -76,6 +81,10 @@ void Setup::callback_keydown( unsigned char key, int x, int y ) {
 		break;
 	}
 	manager::states::key( key, true );
+}
+
+void Setup::callback_mouse( int button, int state, int x, int y ) {
+
 }
 
 void Setup::callback_quit() {
