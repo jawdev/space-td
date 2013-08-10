@@ -5,31 +5,43 @@ namespace jaw3d {
 ///////////////////////////////////////////////// Lighting
 // Unified light model
 
-enum class light_uloc_t { AMBIENT, COLOR, DIRECTION, LEN };
+enum class light_uloc_t { AMBIENT, COLOR, DIRECTION, _LEN };
 
-class Lighting {
+class Light {
 public:
-	Lighting();
-	~Lighting();
+	Light();
+	virtual ~Light();
 
 	// update
 	void locate_uniform( light_uloc_t, GLint );
+	virtual void bind();
+
+protected:
+	GLint* m_uniforms;
+};
+
+
+class DirectionLight : public Light {
+public:
+	DirectionLight( vec3 direction, vec3 color );
+	~DirectionLight();
+
+	// update
 	void bind();
 
 	// set
-	Lighting* ambient( vec3 );
-	Lighting* color( vec3 );
-	Lighting* direction( vec3 );
+	DirectionLight* direction( vec3 );
+	DirectionLight* color( vec3 );
+	DirectionLight* ambient( vec3 );
 
 	// get
-	vec3 ambient();
-	vec3 color();
 	vec3 direction();
+	vec3 color();
+	vec3 ambient();
 private:
-	vec3 m_ambient;	
-	vec3 m_color;
 	vec3 m_direction;
-	GLint* m_uniforms;
+	vec3 m_color;
+	vec3 m_ambient;
 };
 
 } //jaw3d

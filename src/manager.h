@@ -97,8 +97,10 @@ struct states {
 	static void reshape( string name );
 	static void display( int id=-1 );
 	static void display( string name );
-	static void key( unsigned char k, bool down, int id=-1 );
-	static void key( unsigned char k, bool down, string name );
+	static void new_mouse_event( mouse_button_t, mouse_event_t, unsigned int x, unsigned int y, int dz=0, int id=-1 );
+	static void new_mouse_event( mouse_button_t, mouse_event_t, unsigned int x, unsigned int y, int dz, string label );
+	static void new_key_event( unsigned int, key_event_t, int id=-1 );
+	static void new_key_event( unsigned int, key_event_t, string label );
 	
 	static State* active;
 };

@@ -1,6 +1,6 @@
 #include "config.h"
 
-bool SETTINGS::debug = true;
+bool SETTINGS::debug = false;
 string SETTINGS::title = "Space TD";
 unsigned int SETTINGS::width = 800;
 unsigned int SETTINGS::height = 600;

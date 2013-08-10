@@ -12,10 +12,12 @@ public:
 	Camera( GLint uloc, camera_mode=camera_mode::STATIC, camera_proj=camera_proj::PERSPECTIVE );
 	~Camera();
 
-	// update
+	// setup
 	void default_projection();
-	void key_move( vec2 );
-	void mouse_spin( vec2 );
+	void focus( vec3 origin, float radius );
+
+	// update
+	void spin( float x, float y );
 	void zoom( float );
 
 	// bind
@@ -32,6 +34,8 @@ public:
 	Camera* mat_translation( vmath::vec4 );
 	Camera* mat_rotation( vmath::vec4 );
 	Camera* uloc( GLint );
+	Camera* move_speed( float );
+	Camera* spin_speed( float );
 
 	// get
 	camera_mode mode();
@@ -44,6 +48,8 @@ public:
 	vmath::mat4 mat_translation();
 	vmath::mat4 mat_rotation();
 	GLint uloc();
+	float move_speed();
+	float spin_speed();
 private:
 	camera_mode m_mode;
 	camera_proj m_proj;
@@ -55,6 +61,9 @@ private:
 	vmath::mat4 m_matTranslation;
 	vmath::mat4 m_matRotation;
 	GLint m_uloc;
+
+	float m_moveSpeed;
+	float m_spinSpeed;
 };
 
 }

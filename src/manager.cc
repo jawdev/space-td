@@ -17,13 +17,13 @@ ShaderProgram* shaders::get( string label ) { return rlist->get( label ); }
 
 GLint shaders::uloc( unsigned int id, string uniform ) {
 	ShaderProgram* p = get( id );
-	if( p == NULL ) return -1;
+	if( p == nullptr ) return -1;
 	return p->uloc( uniform );
 }
 
 GLint shaders::uloc( string label, string uniform ) {
 	ShaderProgram* p = get( label );
-	if( p == NULL ) return -1;
+	if( p == nullptr ) return -1;
 	return p->uloc( uniform );
 }
 
@@ -43,35 +43,35 @@ Object* objects::get( string label ) { return rlist->get( label ); }
 
 void objects::update( unsigned int id, float dtime ) {
 	Object* o = rlist->get( id );
-	if( o != NULL ) o->update( dtime );
+	if( o != nullptr ) o->update( dtime );
 }
 void objects::update( string name, float dtime ) {
 	Object* o = rlist->get( name );
-	if( o != NULL ) o->update( dtime );
+	if( o != nullptr ) o->update( dtime );
 }
 void objects::render( unsigned int id  ) {
 	Object* o = rlist->get( id );
-	if( o != NULL ) o->render();
+	if( o != nullptr ) o->render();
 }
 void objects::render( string name ) {
 	Object* o = rlist->get( name );
-	if( o != NULL ) o->render();
+	if( o != nullptr ) o->render();
 }
 void objects::bind( unsigned int id ) {
 	Object* o = rlist->get( id );
-	if( o != NULL ) o->bind();
+	if( o != nullptr ) o->bind();
 }
 void objects::bind( string name ) {
 	Object* o = rlist->get( name );
-	if( o != NULL ) o->bind();
+	if( o != nullptr ) o->bind();
 }
 void objects::bind_render( unsigned int id ) {
 	Object* o = rlist->get( id );
-	if( o != NULL ) o->bind_render();
+	if( o != nullptr ) o->bind_render();
 }
 void objects::bind_render( string name ) {
 	Object* o = rlist->get( name );
-	if( o != NULL ) o->bind_render();
+	if( o != nullptr ) o->bind_render();
 }
 void objects::all_update( float dtime ) {
 	for( unsigned int i = 0; i < rlist->size(); i++ ) {
@@ -93,7 +93,7 @@ void objects::all_tick( float dtime ) {
 ///////////////////////////////////////////////// states
 
 reflist< State* >* states::rlist = new reflist< State* >();
-State* states::active = NULL;
+State* states::active = nullptr;
 void states::release() { delete rlist; }
 void states::clear() { rlist->clear(); }
 
@@ -106,52 +106,65 @@ State* states::get( string name ) { return rlist->get( name ); }
 //----------------- manage
 
 State* states::activate( unsigned int id ) {
-	if( active != NULL ) active->unload();
+	if( active != nullptr ) active->unload();
 	active = rlist->get( id );
 	active->load();
 	return active;
 }
 State* states::activate( string label ) {
-	if( active != NULL ) active->unload();
+	if( active != nullptr ) active->unload();
 	active = rlist->get( label );
 	active->load();
 	return active;
 }
 
 void states::reshape( int id ) {
-	if( id < 0 && active != NULL ) { active->reshape(); }
+	if( id < 0 && active != nullptr ) { active->reshape(); }
 	else {
 		State* s = rlist->get( (unsigned int)id );
-		if( s != NULL ) s->reshape();
+		if( s != nullptr ) s->reshape();
 	}
 }
 void states::reshape( string label ) {
 	State* s = rlist->get( label );
-	if( s != NULL ) s->reshape();
+	if( s != nullptr ) s->reshape();
 }
 
 void states::display( int id ) {
-	if( id < 0 && active != NULL ) active->display();
+	if( id < 0 && active != nullptr ) active->display();
 	else {
 		State* s = rlist->get( (unsigned int)id );
-		if( s != NULL ) s->display();
+		if( s != nullptr ) s->display();
 	}
 }
 void states::display( string label ) {
 	State* s = rlist->get( label );
-	if( s != NULL ) s->display();
+	if( s != nullptr ) s->display();
 }
 
-void states::key( unsigned char k, bool down, int id ) {
-	if( id < 0 && active != NULL ) active->key( k, down );
+void states::new_mouse_event( mouse_button_t b, mouse_event_t e, unsigned int x, unsigned int y, int dz, int id ) {
+	if( id < 0 && active != nullptr && active->user_input() != nullptr ) active->user_input()->new_mouse_event( b, e, x, y, dz );
 	else {
 		State* s = rlist->get( (unsigned int)id );
-		if( s != NULL ) s->key( k, down );
+		if( s != nullptr && s->user_input() != nullptr ) s->user_input()->new_mouse_event( b, e, x, y, dz );
 	}
 }
-void states::key( unsigned char k, bool down, string label ) {
+void states::new_mouse_event( mouse_button_t b, mouse_event_t e, unsigned int x, unsigned int y, int dz, string label ) {
 	State* s = rlist->get( label );
-	if( s != NULL ) s->display();
+	if( s != nullptr && s->user_input() != nullptr ) s->user_input()->new_mouse_event( b, e, x, y, dz );
 }
+
+void states::new_key_event( unsigned int k, key_event_t e, int id ) {
+	if( id < 0 && active != nullptr && active->user_input() != nullptr ) active->user_input()->new_key_event( k, e );
+	else {
+		State* s = rlist->get( (unsigned int)id );
+		if( s != nullptr && s->user_input() != nullptr ) s->user_input()->new_key_event( k, e );
+	}
+}
+void states::new_key_event( unsigned int k, key_event_t e, string label ) {
+	State* s = rlist->get( label );
+	if( s != nullptr && s->user_input() != nullptr ) s->user_input()->new_key_event( k, e );
+}
+
 
 }} //manager/jawdev

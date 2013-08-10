@@ -7,33 +7,40 @@ Camera::Camera( GLint uloc, camera_mode mode, camera_proj proj ) {
 	m_uloc = uloc;
 	m_mode = mode;
 	m_proj = proj;
+	m_moveSpeed = 1.0f;
+	m_spinSpeed = 0.001f;
 	default_projection();
 }
 
 Camera::~Camera() {}
 
-//----------------- update
+//----------------- setup
 
 void Camera::default_projection() {
 	float aspect = (float)SETTINGS::height/(float)SETTINGS::width; 
-	switch( m_proj ) {
-	case( camera_proj::PERSPECTIVE ):
+	if( m_proj == camera_proj::PERSPECTIVE ) {
 		m_matProj = vmath::frustum( -1, 1, -aspect, aspect, 1, 500 );
-		break;
-	case( camera_proj::ORTHOGRAPHIC ):
+	} else if( m_proj == camera_proj::ORTHOGRAPHIC ) {
 		cout << "[DEV|NI] Camera::default_projection: ORTHOGRAPHIC" << endl;
-		break;
-	default:
-		return;
 	}
 }
 
-void Camera::key_move( vec2 v ) {
-	cout << "[DEV|NI] Camera::key_move" << endl;
+void Camera::focus( vec3 origin, float radius ) {
+	m_mode = camera_mode::FOCUSED;
+	rotation( vec3() );
+	position( vec3( origin.x, origin.y, origin.z+radius ) );
 }
 
-void Camera::mouse_spin( vec2 v ) {
-	cout << "[DEV|NI] Camera::mouse_spin" << endl;
+//----------------- update
+
+void Camera::spin( float x, float y ) {
+	if( m_mode == camera_mode::UFO || m_mode == camera_mode::FIXED ) {
+		m_rotation.y -= x*m_spinSpeed;
+		m_rotation.x -= y*m_spinSpeed;
+	} else if( m_mode == camera_mode::FOCUSED ) {
+		m_rotation.y += x*m_spinSpeed;
+		m_rotation.x -= y*m_spinSpeed;
+	}
 }
 
 void Camera::zoom( float f ) {
@@ -47,9 +54,10 @@ void Camera::bind() {
 		cerr << "Camera::bind> invalid uniform location (" << m_uloc << ")" << endl;
 		exit( EXIT_FAILURE );
 	}
-	m_matRotation = vmath::mat4( vmath::rotate( -m_rotation.z, Z )*vmath::rotate( -m_rotation.y, Y )*vmath::rotate( -m_rotation.x, X ) );
+	m_matRotation = vmath::mat4( vmath::rotate( -m_rotation.z, Z )*vmath::rotate( -m_rotation.x, X )*vmath::rotate( -m_rotation.y, Y ) );
 	m_matTranslation = vmath::mat4( vmath::translate( -m_position.x, -m_position.y, -m_position.z ) );
-	m_matTransform = m_matTranslation*m_matRotation;
+	if( m_mode == camera_mode::FOCUSED ) m_matTransform = m_matTranslation*m_matRotation;
+	else m_matTransform = m_matRotation*m_matTranslation;
 	m_matFinal = m_matProj*m_matTransform;
 	glUniformMatrix4fv( m_uloc, 1, GL_FALSE, m_matFinal );
 } 
@@ -66,6 +74,8 @@ Camera* Camera::mat_proj( vmath::vec4 mat ) { m_matProj = mat; return this; }
 Camera* Camera::mat_translation( vmath::vec4 mat ) { m_matTranslation = mat; return this; }
 Camera* Camera::mat_rotation( vmath::vec4 mat ) { m_matRotation = mat; return this; }
 Camera* Camera::uloc( GLint i ) { m_uloc = i; return this; }
+Camera* Camera::move_speed( float f ) { m_moveSpeed = f; return this; }
+Camera* Camera::spin_speed( float f ) { m_spinSpeed = f; return this; }
 
 //----------------- get
 
@@ -79,5 +89,7 @@ vmath::mat4 Camera::mat_proj() { return m_matProj; }
 vmath::mat4 Camera::mat_translation() { return m_matTranslation; }
 vmath::mat4 Camera::mat_rotation() { return m_matRotation; }
 GLint Camera::uloc() { return m_uloc; }
+float Camera::move_speed() { return m_moveSpeed; }
+float Camera::spin_speed() { return m_spinSpeed; }
 
 } //jaw3d

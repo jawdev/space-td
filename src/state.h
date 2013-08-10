@@ -12,13 +12,15 @@ public:
 	// load
 	virtual void load();
 	virtual void unload();
-	virtual void key( unsigned char k, bool down ); 
 
 	// update
 	virtual void reshape();
 	virtual void display();
-private:
 
+	// get
+	UserInput* user_input();
+protected:
+	UserInput* m_userInput;
 };
 
 ///////////////////////////////////////////////// TestArea
@@ -39,7 +41,7 @@ private:
 	double m_time;
 	tools::fps_tracker* m_fps;
 	Camera* m_camera;
-	Lighting* m_lighting;
+	DirectionLight* m_light;
 	Renderbuffer* m_renderbuffer;
 };
 

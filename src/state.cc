@@ -3,18 +3,25 @@ namespace jaw3d {
 
 ///////////////////////////////////////////////// State
 
-State::State() {}
+State::State() {
+	m_userInput = nullptr;
+}
+
 State::~State() {}
 
 //----------------- load
+
 void State::load() {}
 void State::unload() {}
-void State::key( unsigned char k, bool down ) {}
 
 //----------------- update
 
 void State::reshape() {}
 void State::display() {}
+
+//----------------- get
+
+UserInput* State::user_input() { return m_userInput; }
 
 ///////////////////////////////////////////////// TestArea
 
@@ -28,6 +35,7 @@ void TestArea::load() {
 	m_time = 0;
 	m_fps = new tools::fps_tracker();
 	m_renderbuffer = new Renderbuffer();
+	m_userInput = new UserInput();
 
 	// basic shaders
 	ShaderProgram* sprog = new ShaderProgram();
@@ -39,21 +47,18 @@ void TestArea::load() {
 		"v3_ambient", "v3_light_color", "v3_light_dir"
 	};
 	sprog->locate_uniforms( uniforms, 6 );
-	sprog->debug();
 	manager::shaders::load( sprog );
 
 	// lighting
-	m_lighting = new Lighting();
-	m_lighting->locate_uniform( light_uloc_t::AMBIENT, manager::shaders::uloc( 0, "v3_ambient" ) );
-	m_lighting->locate_uniform( light_uloc_t::COLOR, manager::shaders::uloc( 0, "v3_light_color" ) );
-	m_lighting->locate_uniform( light_uloc_t::DIRECTION, manager::shaders::uloc( 0, "v3_light_dir" ) );
-	m_lighting->color( vec3( 1, 1, 1 ) );
-	m_lighting->direction( vec3( 0.2f, -1, -0.4f ) );
-	m_lighting->bind();
+	m_light = new DirectionLight( vec3( 0.2f, -1, -0.4f ), vec3( 1, 1, 1 ) );
+	m_light->locate_uniform( light_uloc_t::AMBIENT, manager::shaders::uloc( 0, "v3_ambient" ) );
+	m_light->locate_uniform( light_uloc_t::COLOR, manager::shaders::uloc( 0, "v3_light_color" ) );
+	m_light->locate_uniform( light_uloc_t::DIRECTION, manager::shaders::uloc( 0, "v3_light_dir" ) );
+	m_light->bind();
 
 	// camera
 	m_camera = new Camera( manager::shaders::uloc( 0, "m4_camera" ) );
-	m_camera->position( vec3( 0, 3.0f, 10.0f ) );
+	m_camera->focus( vec3(), 10.0f );
 
 	// objects
 	GLint loc_model = manager::shaders::uloc( 0, "m4_model" );
@@ -69,6 +74,8 @@ void TestArea::load() {
 		pObj2->locate_uniform( obj_uloc_t::MODEL, loc_model );
 		pObj2->locate_uniform( obj_uloc_t::NORMAL, loc_normal );
 		manager::objects::load( pObj2, "plane" );
+
+	// OpenGL parameters
 }
 
 void TestArea::unload() {
@@ -78,7 +85,10 @@ void TestArea::unload() {
 	delete m_fps;
 	delete m_renderbuffer;
 	delete m_camera;
-	delete m_lighting;
+	delete m_userInput;
+	delete m_light;
+
+	m_userInput = nullptr;
 }
 
 //----------------- update
@@ -92,6 +102,14 @@ void TestArea::reshape() {
 }
 
 void TestArea::display() {
+	if( m_userInput->key_event( 27u, key_event_t::DOWN ) ) exit( 0 );
+	float mdx = (float)( ( m_userInput->keydown( 'a' )?-1:0 )+( m_userInput->keydown( 'd' )?1:0 ) );
+	float mdy = (float)( ( m_userInput->keydown( 'w' )?1:0 )+( m_userInput->keydown( 's' )?-1:0 ) );
+	if( mdx != 0 || mdy != 0 ) {
+		m_camera->spin( mdx, mdy );
+		m_camera->bind();
+	}
+
 	float dtime = timer::diff();
 	m_time += dtime;
 	if( m_time > 1 ) {
@@ -106,7 +124,7 @@ void TestArea::display() {
 	manager::objects::all_tick( dtime );
 
 	m_renderbuffer->blit();
-
+	m_userInput->flush();
 }
 
 } //jaw3d

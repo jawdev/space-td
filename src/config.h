@@ -26,7 +26,7 @@ using namespace std;
 // user files
 #include "utils.h"
 #include "geometry.h"
-#include "display.h"
+#include "setup.h"
 #include "oglpg_vmath.h"
 #include "light.h"
 #include "camera.h"
@@ -34,6 +34,7 @@ using namespace std;
 #include "shape.h"
 #include "object.h"
 #include "buffer.h"
+#include "user_input.h"
 #include "state.h"
 #include "manager.h"
 using namespace jaw3d;
