@@ -66,5 +66,32 @@ private:
 	GLfloat* m_normals;
 };
 
+///////////////////////////////////////////////// Sphere
+
+class Sphere : public Shape {
+public:
+	Sphere( float radius=1.0f, unsigned int quality=0, vec4 color=vec4() );
+	~Sphere();
+
+	// update
+	void bind();
+	void render();
+
+	// get
+	float radius();
+	unsigned int quality();
+private:
+	unsigned int m_faces;
+	unsigned int m_vc;
+	unsigned int m_nc;
+	float m_radius;
+	unsigned int m_quality;
+	GLuint m_va;
+	GLuint m_vb;
+	GLfloat* m_vertices;
+	GLfloat* m_normals;
+	
+};
+
 } //jaw3d
 #endif //__SHAPE_H__

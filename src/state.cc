@@ -58,22 +58,28 @@ void TestArea::load() {
 
 	// camera
 	m_camera = new Camera( manager::shaders::uloc( 0, "m4_camera" ) );
-	m_camera->focus( vec3(), 10.0f );
+	m_camera->focus( vec3(), 5.0f );
 
 	// objects
 	GLint loc_model = manager::shaders::uloc( 0, "m4_model" );
 	GLint loc_normal = manager::shaders::uloc( 0, "m3_normal" );
 	Object* pObj = new Object();
-		pObj->load_shape( new Cube( 0.5f, vec4( 1, 0, 0, 1 ) ) );
+		pObj->load_shape( new Sphere( 1, 10, vec4( 1, 0, 0, 1 ) ) );
 		pObj->locate_uniform( obj_uloc_t::MODEL, loc_model );
 		pObj->locate_uniform( obj_uloc_t::NORMAL, loc_normal );
-		pObj->position( vec3( 1, 2, 0 ) )->spin( vec3( 0, 0.1f, 0 ) );
-		manager::objects::load( pObj, "cube" );
+		manager::objects::load( pObj, "obj" );
 	Object* pObj2 = new Object();
 		pObj2->load_shape( new FloorPlane( 5, 5, vec4( 1, 1, 1, 1 ) ) );
 		pObj2->locate_uniform( obj_uloc_t::MODEL, loc_model );
 		pObj2->locate_uniform( obj_uloc_t::NORMAL, loc_normal );
+		pObj2->position( vec3( 0, -2, 0 ) );
 		manager::objects::load( pObj2, "plane" );
+	Object* pObj3 = new Object();
+		pObj3->load_shape( new Cube( 0.5f, vec4( 0, 1, 0, 1 ) ) );
+		pObj3->locate_uniform( obj_uloc_t::MODEL, loc_model );
+		pObj3->locate_uniform( obj_uloc_t::NORMAL, loc_normal );
+		pObj3->position( vec3( 0, 2, 0 ) );
+		manager::objects::load( pObj3, "obj2" );
 
 	// OpenGL parameters
 }
